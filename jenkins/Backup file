@@ -1,0 +1,51 @@
+pipeline {
+    agent { label 'master' }
+ 
+    environment {
+        JENKINS_HOME = "/var/lib/jenkins"
+        BACKUP_DIR = "/opt/jenkins_backups"
+        RETENTION_DAYS = "7"
+        DATE = sh(script: "date +%F-%H-%M", returnStdout: true).trim()
+    }
+ 
+    stages {
+        stage('Prepare Backup Directory') {
+            steps {
+                sh '''
+                mkdir -p $BACKUP_DIR
+                '''
+            }
+        }
+ 
+        stage('Backup Jenkins Data') {
+            steps {
+                sh '''
+                tar -czf $BACKUP_DIR/jenkins_backup_$DATE.tar.gz \
+                $JENKINS_HOME/config.xml \
+                $JENKINS_HOME/jobs \
+                $JENKINS_HOME/plugins \
+                $JENKINS_HOME/users \
+                $JENKINS_HOME/secrets \
+                $JENKINS_HOME/credentials.xml
+                '''
+            }
+        }
+ 
+        stage('Cleanup Old Backups') {
+            steps {
+                sh '''
+                find $BACKUP_DIR -type f -mtime +$RETENTION_DAYS -delete
+                '''
+            }
+        }
+    }
+ 
+    post {
+        success {
+            echo "Jenkins backup completed successfully."
+        }
+        failure {
+            echo "Jenkins backup failed."
+        }
+    }
+}
