@@ -1,51 +1,33 @@
 pipeline {
-    agent { label 'master' }
- 
+    agent any
+
     environment {
-        JENKINS_HOME = "/var/lib/jenkins"
-        BACKUP_DIR = "/opt/jenkins_backups"
-        RETENTION_DAYS = "7"
-        DATE = sh(script: "date +%F-%H-%M", returnStdout: true).trim()
+        BACKUP_DIR = "/var/backups/jenkins"
+        BACKUP_FILE = "jenkins-backup-${new Date().format('yyyyMMdd-HHmmss')}.tar.gz"
+        JENKINS_HOME_DIR = "/var/lib/jenkins"
     }
- 
+
     stages {
-        stage('Prepare Backup Directory') {
+        stage('Backup Jenkins Home') {
             steps {
-                sh '''
-                mkdir -p $BACKUP_DIR
-                '''
+                script {
+                    echo "=== Starting Jenkins Backup ==="
+
+                    // Define the full path for the backup file
+                    def backupFile = "${BACKUP_DIR}/${BACKUP_FILE}"
+
+                    // Create backup directory if it doesn't exist
+                    sh "mkdir -p ${BACKUP_DIR}"
+
+                    // Compress Jenkins home directory into a single tar.gz file
+                    sh """
+                        tar -czf ${backupFile} ${JENKINS_HOME_DIR}
+                    """
+
+                    echo "✅ Backup completed successfully!"
+                    echo "Backup file created at: ${backupFile}"
+                }
             }
-        }
- 
-        stage('Backup Jenkins Data') {
-            steps {
-                sh '''
-                tar -czf $BACKUP_DIR/jenkins_backup_$DATE.tar.gz \
-                $JENKINS_HOME/config.xml \
-                $JENKINS_HOME/jobs \
-                $JENKINS_HOME/plugins \
-                $JENKINS_HOME/users \
-                $JENKINS_HOME/secrets \
-                $JENKINS_HOME/credentials.xml
-                '''
-            }
-        }
- 
-        stage('Cleanup Old Backups') {
-            steps {
-                sh '''
-                find $BACKUP_DIR -type f -mtime +$RETENTION_DAYS -delete
-                '''
-            }
-        }
-    }
- 
-    post {
-        success {
-            echo "Jenkins backup completed successfully."
-        }
-        failure {
-            echo "Jenkins backup failed."
         }
     }
 }
