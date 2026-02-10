@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Jenkins Node Details') {
+            steps {
+                script {
+                    echo "===== Jenkins Node Information ====="
+                    echo "Node Name      : ${env.NODE_NAME}"
+                    echo "Node Labels    : ${env.NODE_LABELS}"
+                    echo "Workspace      : ${env.WORKSPACE}"
+                    echo "Jenkins URL    : ${env.JENKINS_URL}"
+                    echo "Build URL      : ${env.BUILD_URL}"
+
+                    if (env.NODE_NAME == 'master' || env.NODE_NAME == 'built-in') {
+                        echo "Running on Jenkins MASTER (Controller)"
+                    } else {
+                        echo "Running on Jenkins SLAVE (Agent)"
+                    }
+                }
+
+                sh '''
+                    echo "===== System Details ====="
+                    hostname
+                    whoami
+                    uname -a
+                '''
+            }
+        }
+    }
+}
