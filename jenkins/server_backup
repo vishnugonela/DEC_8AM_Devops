@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         BACKUP_DIR = "/var/backups/jenkins"
-        BACKUP_FILE = "jenkins-backup-${new Date().format('yyyyMMdd-HHmmss')}.tar.gz"
         JENKINS_HOME_DIR = "/var/lib/jenkins"
     }
 
@@ -11,21 +10,16 @@ pipeline {
         stage('Backup Jenkins Home') {
             steps {
                 script {
+                    def timestamp = new Date().format('yyyyMMdd-HHmmss')
+                    def backupFile = "${BACKUP_DIR}/jenkins-backup-${timestamp}.tar.gz"
+
                     echo "=== Starting Jenkins Backup ==="
 
-                    // Define the full path for the backup file
-                    def backupFile = "${BACKUP_DIR}/${BACKUP_FILE}"
-
-                    // Create backup directory if it doesn't exist
                     sh "mkdir -p ${BACKUP_DIR}"
-
-                    // Compress Jenkins home directory into a single tar.gz file
-                    sh """
-                        tar -czf ${backupFile} ${JENKINS_HOME_DIR}
-                    """
+                    sh "tar -czf ${backupFile} ${JENKINS_HOME_DIR}"
 
                     echo "✅ Backup completed successfully!"
-                    echo "Backup file created at: ${backupFile}"
+                    echo "Backup file: ${backupFile}"
                 }
             }
         }
