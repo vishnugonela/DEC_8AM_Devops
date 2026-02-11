@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage() {
+        stage('Server Details') {
             steps {
                 sh '''
                 echo "===== JENKINS MASTER DETAILS ====="
