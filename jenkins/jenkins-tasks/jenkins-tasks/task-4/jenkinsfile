@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+    parameters {
+        choice(
+            name: 'ENVIRONMENT',
+            choices: ['dev', 'qa', 'prod'],
+            description: 'Select the environment'
+        )
+
+        choice(
+            name: 'VERSION',
+            choices: ['1.0.0', '2.0.0'],
+            description: 'Select the version'
+        )
+    }
+
+    stages {
+        stage('Enter the input') {
+            steps {
+                script {
+
+                    if (params.VERSION.trim() == '') {
+                        error "VERSION cannot be empty"
+                    }
+
+                    if (!(params.ENVIRONMENT in ['dev', 'qa', 'prod'])) {
+                        error "Invalid environment selected"
+                    }
+
+                    echo "Input validation success"
+                    echo "Environment: ${params.ENVIRONMENT}"
+                    echo "Version: ${params.VERSION}"
+                }
+            }
+        }
+    }
+}

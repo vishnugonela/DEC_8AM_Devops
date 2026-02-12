@@ -1,0 +1,110 @@
+pipeline {
+    agent none
+
+    stages {
+
+        /* ===== NODE-1 STAGES ===== */
+
+        stage('stage-1 NODE-1') {
+            agent { label 'NODE-1' }
+            steps {
+                sh '''
+                echo "running on NODE-1"
+                hostname
+                '''
+            }
+        }
+
+        stage('stage-2 NODE-1') {
+            agent { label 'NODE-1' }
+            steps {
+                sh '''
+                echo "running on NODE-1"
+                whoami
+                '''
+            }
+        }
+
+        stage('stage-3 NODE-1') {
+            agent { label 'NODE-1' }
+            steps {
+                sh '''
+                echo "running on NODE-1"
+                uname -a
+                '''
+            }
+        }
+
+        stage('stage-4 NODE-1') {
+            agent { label 'NODE-1' }
+            steps {
+                sh '''
+                echo "running on NODE-1"
+                date
+                '''
+            }
+        }
+
+        stage('stage-5 NODE-1') {
+            agent { label 'NODE-1' }
+            steps {
+                sh '''
+                echo "running on NODE-1"
+                pwd
+                '''
+            }
+        }
+
+        /* ===== NODE-2 STAGES ===== */
+
+        stage('stage-1 NODE-2') {
+            agent { label 'NODE-2' }
+            steps {
+                sh '''
+                echo "running on NODE-2"
+                hostname
+                '''
+            }
+        }
+
+        stage('stage-2 NODE-2') {
+            agent { label 'NODE-2' }
+            steps {
+                sh '''
+                echo "running on NODE-2"
+                whoami
+                '''
+            }
+        }
+
+        stage('stage-3 NODE-2') {
+            agent { label 'NODE-2' }
+            steps {
+                sh '''
+                echo "running on NODE-2"
+                uname -a
+                '''
+            }
+        }
+
+        stage('stage-4 NODE-2') {
+            agent { label 'NODE-2' }
+            steps {
+                sh '''
+                echo "running on NODE-2"
+                date
+                '''
+            }
+        }
+
+        stage('stage-5 NODE-2') {
+            agent { label 'NODE-2' }
+            steps {
+                sh '''
+                echo "running on NODE-2"
+                pwd
+                '''
+            }
+        }
+    }
+}

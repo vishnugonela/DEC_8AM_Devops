@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('mkdir') {
+            environment {
+                DEBUG = "true"
+            }
+            steps {
+                sh '''
+                if [ "$DEBUG" = "true" ]; then
+                    set -x
+                    mkdir -p newfolder
+                fi
+
+                echo "created new folder"
+                '''
+            }
+        }
+
+        stage('create file') {
+            environment {
+                DEBUG = "true"
+            }
+            steps {
+                sh '''
+                if [ "$DEBUG" = "true" ]; then
+                    set -x
+                    touch output.txt
+                fi
+
+                echo "created the new file"
+                '''
+            }
+        }
+    }
+}

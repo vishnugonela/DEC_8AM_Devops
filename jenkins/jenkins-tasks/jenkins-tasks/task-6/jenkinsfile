@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Build Stage') {
+            steps {
+                script {
+                    try {
+                        echo "Build stage initializing"
+                        sh 'exit 1'
+                    }
+                    catch (Exception e) {
+                        echo "The error is: ${e}"
+                        currentBuild.result = 'FAILURE'
+                    }
+                    finally {
+                        echo "Build stage completed (success or failure)"
+                    }
+                }
+            }
+        }
+
+        stage('After Build Stage') {
+            steps {
+                echo "This is running after build stage"
+            }
+        }
+    }
+}

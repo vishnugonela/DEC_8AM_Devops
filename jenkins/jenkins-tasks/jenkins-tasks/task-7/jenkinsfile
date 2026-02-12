@@ -1,0 +1,22 @@
+pipeline{
+    agent any
+    stages{
+        stage ( 'stage-1'){
+            steps{
+                catchError( buildResult: 'SUCCESS', stageResult:'SUCCESS'){
+                    sh '''
+                    echo "currently in stage 1"
+                    exit 1
+                    '''
+                }
+            }
+        }
+        stage ( 'stage-2'){
+            steps {
+                sh '''
+                echo "currently running in stage-2 after stage-1 failure"
+                '''
+            }
+        }
+    }
+}

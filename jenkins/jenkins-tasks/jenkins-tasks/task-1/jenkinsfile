@@ -1,0 +1,42 @@
+pipeline {
+    agent none
+
+    stages {
+
+        stage('Master Node Details') {
+            agent { label 'master' }
+            steps {
+                sh '''
+                echo "===== MASTER NODE DETAILS ====="
+
+                echo "Node Name   = $NODE_NAME"
+                echo "Node Labels = $NODE_LABELS"
+                echo "Workspace   = $WORKSPACE"
+
+                echo "Hostname    = $(hostname)"
+                echo "OS Info     = $(uname -a)"
+                echo "User        = $(whoami)"
+                '''
+            }
+        }
+
+        stage('Slave Node Details') {
+            agent { label 'linux-agent' }
+            steps {
+                sh '''
+                echo "===== SLAVE NODE DETAILS ====="
+
+                echo "Node Name   = $NODE_NAME"
+                echo "Node Labels = $NODE_LABELS"
+                echo "Workspace   = $WORKSPACE"
+
+                echo "Hostname    = $(hostname)"
+                echo "OS Info     = $(uname -a)"
+                echo "User        = $(whoami)"
+                '''
+            }
+        }
+
+    }
+}
+ssw
