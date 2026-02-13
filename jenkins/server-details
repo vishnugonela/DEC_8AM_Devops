@@ -1,0 +1,19 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Server Details') {
+            steps {
+                sh '''
+                echo "===== JENKINS MASTER DETAILS ====="
+                hostname
+                hostname -I
+                uname -a
+                lscpu | head -10
+                free -h
+                df -h
+                '''
+            }
+        }
+    }
+}
