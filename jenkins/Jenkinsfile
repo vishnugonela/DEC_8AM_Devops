@@ -15,7 +15,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo " Executing code from Linux repo"
-                bash ${WORKSPACE}/linux/script.sh
+                sh "bash ${WORKSPACE}/linux/script.sh"
                 echo 'Deploying the application...'
             }
         }
