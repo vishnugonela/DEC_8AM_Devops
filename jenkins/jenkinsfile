@@ -1,7 +1,7 @@
 pipeline {
 
     agent {
-        lable 'node2' 
+        lable 'n2' 
     }
 
     stages{
