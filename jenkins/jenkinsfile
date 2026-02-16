@@ -40,7 +40,7 @@ pipeline {
 
                 sh '''
 
-                    echo "Deploy stage is completed"
+                    echo "Deplo stage is completed"
 
                 '''
 
