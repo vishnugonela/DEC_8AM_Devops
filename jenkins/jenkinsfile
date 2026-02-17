@@ -1,52 +1,28 @@
 pipeline {
-
-    agent
-
+    agent 
     stages{
-
         stage('build'){
-
             steps{
-
                 sh '''
-
                     echo "Build stage is completed"
-
                 '''
-
             }
-
         }
-
         stage('test'){
-
             steps{
-
                 sh '''
-
                     echo "Test stage is completed"
-
                 '''
-
             }
-
         }
-
         stage('deploy'){
-
             steps{
-
                 sh '''
-
-                    echo "Deplo stage is completed"
-
+                    echo "Executing Code from Linux repo"
+                    bash ${WORKSPACE}/linux/script.sh
+                    echo "Deploy stage is completed"
                 '''
-
             }
-
         }
-
     }
-
 }
- 
