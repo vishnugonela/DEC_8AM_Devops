@@ -1,0 +1,32 @@
+pipeline{
+    agent none
+    stages{
+        stage ( 'Run with fallback'){
+            steps{
+                script{
+                    try {
+                        node ('master'){
+                            sh '''
+                            echo "running on master"
+                            exit 1
+                            hostname -I
+                            uname -a
+                            '''
+                        }
+                    }
+                    catch (Exception e) {
+                        echo "master failed"
+                        echo "the reason is ${e}"
+                        node ( 'node1' ){
+                            sh '''
+                            echo "running on node1"
+                            hostname -I
+                            uname -a
+                            '''
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

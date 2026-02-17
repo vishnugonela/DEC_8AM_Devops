@@ -1,0 +1,19 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'ENVIRONMENT', defaultValue: 'dev')
+        string(name: 'VERSION', defaultValue: '1.0.0')
+    }
+
+    stages {
+        stage('Print values') {
+            steps {
+                sh '''
+                echo "ENVIRONMENT = $ENVIRONMENT"
+                echo "VERSION = $VERSION"
+                '''
+            }
+        }
+    }
+}

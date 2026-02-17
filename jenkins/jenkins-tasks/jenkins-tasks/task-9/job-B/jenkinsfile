@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Call job-A') {
+            steps {
+                script {
+                    // Trigger Job-A and wait
+                    def result = build job: 'job-A', wait: true
+
+                    // Read Job-A parameter values
+                    def vars = result.getBuildVariables()
+
+                    // Copy them to Job-B environment
+                    env.ENVIRONMENT = vars['ENVIRONMENT']
+                    env.VERSION = vars['VERSION']
+                }
+            }
+        }
+
+        stage('Mentioning the values') {
+            steps {
+                sh '''
+                echo "Job-B received ENVIRONMENT = $ENVIRONMENT"
+                echo "Job-B received VERSION = $VERSION"
+                '''
+            }
+        }
+    }
+}

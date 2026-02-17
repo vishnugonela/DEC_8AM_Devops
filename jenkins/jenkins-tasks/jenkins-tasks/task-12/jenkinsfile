@@ -1,0 +1,30 @@
+pipeline {
+    agent none
+
+    stages {
+        stage('Build on NODE1') {
+            agent { label 'NODE1' }
+            steps {
+                echo "Running on NODE1"
+                sh 'hostname'
+            }
+        }
+
+        stage('Test on NODE2') {
+            agent { label 'NODE2' }
+            steps {
+                echo "Running on NODE2"
+                sh 'hostname'
+            }
+        }
+
+        stage('Deploy on NODE3') {
+            agent { label 'NODE3' }
+            steps {
+                echo "Running on NODE3"
+                sh 'hostname'
+            }
+        }
+    }
+}
+

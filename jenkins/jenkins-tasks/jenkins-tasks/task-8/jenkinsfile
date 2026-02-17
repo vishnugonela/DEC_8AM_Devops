@@ -1,0 +1,22 @@
+pipeline{
+    agent {label 'Docker'}
+    stages {
+        stage ( 'check docker node') {
+            steps {
+                sh '''
+                echo "running in docker node"
+                docker --version
+                hostname -I
+                '''
+            }
+        }
+        stage ( 'docker run' ){
+        steps {
+        sh '''
+        echo " running the docker"
+        docker run hello-world
+        '''
+        }
+        }
+    }
+}
