@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('copy artifacts') {
+            steps {
+                copyArtifacts(
+                    projectName: 'task10/job-1',
+                    selector: lastSuccess(),
+                    target: 'copiedArtifacts'
+                )
+            }
+        }
+
+        stage('use copied artifacts') {
+            steps {
+                sh '''
+                echo "listing the copied artifacts"
+                ls -R copiedArtifacts
+
+                echo "reading file content"
+                cat copiedArtifacts/file.txt
+                '''
+            }
+        }
+    }
+}

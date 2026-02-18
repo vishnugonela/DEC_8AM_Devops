@@ -1,0 +1,20 @@
+pipeline{
+    agent any
+    stages{
+        stage ('build'){
+        steps {
+            sh '''
+            echo "this is the content of file"> file.txt
+            mkdir folder
+            echo "this is content in folder" > folder/file2.txt
+            '''
+        }
+        }
+    }
+    post {
+        success{
+            archiveArtifacts artifacts : 'file.txt, folder/**'
+        }
+    }
+}
+   
