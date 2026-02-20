@@ -17,3 +17,10 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+  deploy:
+      runs-on: ubuntu-latest
+      steps:
+        - name: deployment step
+          run: |
+             echo "Hostname is $hostname"
+             echo "IP of the host is $(hostname -I)"
