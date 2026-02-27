@@ -1,0 +1,7 @@
+# 1. Write a dockerfile to create nginx image with "hello docker from <Vishnu>"
+
+FROM ubuntu:22.04
+RUN apt update && apt install nginx -y
+RUN rm -f /usr/share/nginx/html/*
+COPY index.html /usr/share/nginx/html/
+ENTRYPOINT ["/bin/bash", "-c", "service nginx start && bash"]
