@@ -1,35 +1,35 @@
 #!/bin/bash
 
-# Number of containers to create
+# Step 1: Define how many containers you want
 COUNT=10
 
-# Docker image to use
+# Step 2: Define image name
 IMAGE="nginx"
 
+# Step 3: Loop from 1 to 10
 for i in $(seq 1 $COUNT)
 do
-    CONTAINER_NAME="my_container_$i"
+    CONTAINER_NAME="mycontainer_$i"
 
-    echo "Processing $CONTAINER_NAME..."
+    echo "Checking $CONTAINER_NAME ..."
 
-    # Check if container exists (running or stopped)
-    if [ "$(docker ps -a -q -f name=^/${CONTAINER_NAME}$)" ]; then
-        echo "Container $CONTAINER_NAME exists. Removing..."
+    # Step 4: Check if container already exists
+    if docker ps -a --format '{{.Names}}' | grep -w $CONTAINER_NAME > /dev/null 2>&1
+    then
+        echo "$CONTAINER_NAME exists. Deleting..."
 
-        # Stop container if running
-        if [ "$(docker ps -q -f name=^/${CONTAINER_NAME}$)" ]; then
-            docker stop $CONTAINER_NAME
-        fi
+        # Stop container (if running)
+        docker stop $CONTAINER_NAME > /dev/null 2>&1
 
         # Remove container
         docker rm $CONTAINER_NAME
     fi
 
-    # Create new container
+    # Step 5: Create new container
     docker run -d --name $CONTAINER_NAME $IMAGE
 
-    echo "Container $CONTAINER_NAME created successfully."
-    echo "---------------------------------------------"
+    echo "$CONTAINER_NAME created successfully"
+    echo "-------------------------------"
 done
 
-echo "All $COUNT containers processed."
+echo "All 10 containers created."
