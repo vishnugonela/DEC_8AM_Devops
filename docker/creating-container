@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Number of containers to create
+COUNT=10
+
+# Docker image to use
+IMAGE="nginx"
+
+for i in $(seq 1 $COUNT)
+do
+    CONTAINER_NAME="my_container_$i"
+
+    echo "Processing $CONTAINER_NAME..."
+
+    # Check if container exists (running or stopped)
+    if [ "$(docker ps -a -q -f name=^/${CONTAINER_NAME}$)" ]; then
+        echo "Container $CONTAINER_NAME exists. Removing..."
+
+        # Stop container if running
+        if [ "$(docker ps -q -f name=^/${CONTAINER_NAME}$)" ]; then
+            docker stop $CONTAINER_NAME
+        fi
+
+        # Remove container
+        docker rm $CONTAINER_NAME
+    fi
+
+    # Create new container
+    docker run -d --name $CONTAINER_NAME $IMAGE
+
+    echo "Container $CONTAINER_NAME created successfully."
+    echo "---------------------------------------------"
+done
+
+echo "All $COUNT containers processed."
