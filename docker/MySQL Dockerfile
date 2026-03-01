@@ -8,4 +8,4 @@ ENV MYSQL_USER=myuser
 ENV MYSQL_PASSWORD=mypassword
 
 # Expose MySQL port
-EXPOSE 3306
+EXPOSE 8001
