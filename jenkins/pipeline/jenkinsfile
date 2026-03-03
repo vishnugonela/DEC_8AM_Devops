@@ -1,1 +1,71 @@
+pipeline {
+    agent any
+    stages {
+       stage ('code checkout') {
+        steps {
+            git branch: 'main', url: 'https://github.com/vishnugonela/pythonapp.git'
+        }
+       }
+       stage (image_builds) {
+        steps{
+            sh '''
+            cd ${WORKSPACE}
+            echo "building image"
+            docker image build -t pyimg:latest .
 
+            '''
+        }
+       }
+       stage('image_tag_push') {
+    steps {
+        withCredentials([
+            usernamePassword(
+                credentialsId: 'docker-creds',
+                usernameVariable: 'DOCKER_USER',
+                passwordVariable: 'DOCKER_PASS'
+            )
+        ]) {
+            sh '''
+                docker tag pyimg:latest jpraveen97/devops:t6
+                docker login -u $DOCKER_USER -p $DOCKER_PASS
+                docker push jpraveen97/devops:t6
+            '''
+        }
+    }
+}
+        stage ('deployment_slave'){
+            agent {
+                label 'Node-1'
+            }
+            steps{
+                sh '''
+                
+                if 
+                docker container ls -a | grep -q t-6
+                then
+                echo "******** Removing the container t-6 **********"
+                docker container rm -f t-6
+                docker container run -d --name t-6 -p 5050:8000 jpraveen97/devops:t6
+                else
+                 echo "******** creating the container t-6 **********"
+                 docker container run -d --name t-6 -p 5050:8000 jpraveen97/devops:t6
+                fi
+                '''
+
+
+            }
+            }
+             stage('validate_app_run'){
+        agent {
+        label 'Node-1'
+      }
+      steps {
+        sh '''
+            docker container ls | grep t-6
+        '''
+      }
+    }
+        }
+       
+    }
+}
