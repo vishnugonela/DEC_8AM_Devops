@@ -22,14 +22,17 @@ pipeline {
 
     stage('docker_tag_push'){
       steps {
+        withCredentials([string(credentialsId: 'docker_pass', variable: 'Docker_TOKEN')]) {
+
         sh '''
             docker image tag pythonapp:latest vishnugonela/pythonapp:latest
 
-            docker login -u vishnugonela -p ${docker_pass}
+            docker login -u vishnugonela -p ${Docker_TOKEN}
 
             docker image push vishnugonela/pythonapp:latest
 
         '''
+        }
       }
     }
 
