@@ -42,8 +42,7 @@ pipeline {
       }
       steps {
         sh '''
-            docker container ls -a | grep app1
-            if [ $? == 0 ]
+            if docker container ls -a | grep -q app1
             then
                 echo "******** Removing the container app1 **********"
                 docker container rm -f app1
