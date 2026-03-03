@@ -63,7 +63,7 @@ pipeline {
       steps {
         sh '''
             docker container ls | grep app1
-            docker container logs | grep "Listening"
+            docker container logs app1 | grep "Listening"
         '''
       }
     }
