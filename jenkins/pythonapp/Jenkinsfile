@@ -25,7 +25,7 @@ pipeline {
         sh '''
             docker image tag pythonapp:latest vishnugonela/pythonapp:latest
 
-            docker login -u vishnugonela -p Vishnu@15988
+            docker login -u vishnugonela -p ${docker_pass}
 
             docker image push vishnugonela/pythonapp:latest
 
