@@ -1,0 +1,60 @@
+pipeline {
+
+  agent any
+  stages{
+    stage('git_checkout'){
+      steps {
+        git branch: 'main', url: 'https://github.com/vishnugonela/pythonapp.git'
+      }
+    }
+
+    stage('docker_image_build'){
+      steps {
+        sh '''
+          cd  ${WORKSPACE}/pythonapp
+          echo "Image Building ..."
+
+          docker image build -t pythonapp .
+          
+        '''
+      }
+    }
+
+    stage('docker_tag_push'){
+      steps {
+        sh '''
+            docker image tag pythonapp:latest vishnugonela/pythonapp:latest
+
+            docker login -u vishnugonela -p Vishnu@15988
+
+            docker image push vishnugonela/pythonapp:latest
+
+        '''
+      }
+    }
+
+    stage('deployment_on_slave'){
+      agent {
+        label 'Node1'
+      }
+      steps {
+        sh '''
+            docker container run --name app1 -p 8080:8000  vishnugonela/pythonapp:latest 
+        '''
+      }
+      
+    }
+
+    stage('validate_app_run'){
+        agent {
+        label 'Node1'
+      }
+      steps {
+        sh '''
+            docker container ls | grep app1
+            docker container logs | grep 8000
+        '''
+      }
+    }
+  }
+}
