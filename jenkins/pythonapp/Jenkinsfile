@@ -11,7 +11,7 @@ pipeline {
     stage('docker_image_build'){
       steps {
         sh '''
-          cd  ${WORKSPACE}/pythonapp
+          cd  ${WORKSPACE}/
           echo "Image Building ..."
 
           docker image build -t pythonapp .
