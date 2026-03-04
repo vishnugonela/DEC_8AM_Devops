@@ -1,0 +1,16 @@
+FROM ubuntu:24.04
+RUN apt update && apt install -y apache2
+RUN echo '#!/bin/bash\n\
+echo "<h1>Container Details</h1>" > /var/www/html/index.html\n\
+echo "Container name: $(hostname)<br>" >> /var/www/html/index.html\n\
+echo "Container IP: $(hostname -I)<br>" >> /var/www/html/index.html\n\
+echo "Date: $(date)<br>" >> /var/www/html/index.html\n\
+apachectl -D FOREGROUND' > /start.sh
+RUN chmod +x /start.sh
+EXPOSE 80
+CMD ["/start.sh"]
+
+
+#docker run -d --name sravani --hostname sravani -p 8080:80 hello
+# To display "sravani" as the container name on the webpage, we pass the hostname dynamically.
+# Otherwise, $(hostname) inside the container shows the default container ID                                                                                 
