@@ -1,0 +1,23 @@
+#!/bin/bash
+
+
+
+echo " shows only directories"
+ls | grep "d"
+
+echo "shows only files"
+
+ls | grep "-"
+
+echo " shows only hidden files"
+
+ls -a | grep "^\."
+
+echo "shows files and folders from largest to smallest in size"
+
+ls -lS
+
+echo "shows files and folders from smallest to largest"
+ls -lSr
+
+

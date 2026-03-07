@@ -22,3 +22,4 @@ echo " display the file name more than 5mb"
 find -type f -mtime +1
 echo "display the files which is older than 1 days"
 
+

@@ -1,3 +1,3 @@
 #/bin/bash
 
-find "Vishnu" fileb.java
+findstr "VIshnu" fileb.java
