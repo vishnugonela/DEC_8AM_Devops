@@ -1,0 +1,15 @@
+// Write a dockerfile to create nginx image with "hello docker from <Suki>"
+
+mkdir nginx-docker - creating a directory for docker
+cd nginx-docker
+
+vim Dockerfile - creating a Dockerfile with standard instances
+
+FROM nginx:latest - Pulls the base NGINX image from Docker Hub.
+RUN echo "Hello Docker from Suki" > /usr/share/nginx/html/index.html - Replaces the default Nginx web page with your message.
+
+
+docker build -t suki-nginx .  - Build the Image
+docker run -d -p 8080:80 --name suki-container suki-nginx - Run the Container
+docker ps - list the containers
+
