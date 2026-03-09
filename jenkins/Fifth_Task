@@ -1,0 +1,40 @@
+// Verify/enable DEBUG option on each stage of pipeline job
+
+pipeline {
+    agent any
+
+    // This creates the "Debug" checkbox in the Jenkins UI
+    parameters {
+        booleanParam(name: 'ENABLE_DEBUG', defaultValue: false, description: 'Check this to enable verbose stage logging')
+    }
+
+    stages {
+        stage('Initialize') {
+            steps {
+                script {
+                    // Check if the user enabled debug mode
+                    if (params.ENABLE_DEBUG) {
+                        echo "--- DEBUG ENABLED: Printing Environment ---"
+                        sh 'env | sort'
+                    }
+                    echo "Initializing build..."
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    // Conditional debugging for specific shell commands
+                    def debugPrefix = params.ENABLE_DEBUG ? 'set -x' : 'set +x'
+                    sh """
+                        ${debugPrefix}
+                        echo "Building the application..."
+                        # Your build commands here
+                    """
+                }
+            }
+        }
+    }
+}
+

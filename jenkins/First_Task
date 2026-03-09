@@ -1,0 +1,19 @@
+// Create jenkins pipeline job to find master/slave server details:
+
+pipeline {
+    agent none
+    stages {
+        stage('Master') {
+            agent { label 'built-in' }
+            steps {
+                sh 'hostname -I; uptime'
+            }
+        }
+        stage('Slave') {
+            agent { label 'NODE1' }
+            steps {
+                sh 'hostname -I; free -m'
+            }
+        }
+    }
+}

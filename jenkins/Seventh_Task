@@ -1,0 +1,24 @@
+// Write a pipeline script to skip stage1 error and execute stage2
+
+pipeline {
+    agent any
+    stages {
+        stage('Stage 1 - The Risky Stage') {
+            steps {
+                // catchError allows this stage to fail without stopping the whole pipeline
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    echo "Attempting Stage 1..."
+                    sh 'exit 1' // This command fails on purpose
+                }
+            }
+        }
+        
+        stage('Stage 2 - The Guaranteed Stage') {
+            steps {
+                echo "Stage 1 failed, but I am running anyway!"
+                sh 'echo "Stage 2 is working perfectly."'
+            }
+        }
+    }
+}
+

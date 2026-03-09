@@ -1,0 +1,37 @@
+// Write a pipeline script to execute exception error or error handling. 
+
+pipeline {
+    agent any
+    stages {
+        stage('Test Error Handling') {
+            steps {
+                script {
+                    try {
+                        echo "Step 1: Trying to run a command..."
+                        // This will fail because 'fake-command' doesn't exist
+                        sh 'fake-command' 
+                        
+                    } catch (Exception e) {
+                        // This block runs ONLY if the 'try' block fails
+                        echo "Step 2: CAUGHT AN ERROR!"
+                        echo "Error Details: ${e.toString()}"
+                        
+                        // Set the job status to 'UNSTABLE' so it doesn't turn Red (Failure)
+                        currentBuild.result = 'UNSTABLE'
+                    } finally {
+                        // This block ALWAYS runs, even if there was an error
+                        echo "Step 3: CLEANUP - Removing temporary files..."
+                    }
+                }
+            }
+        }
+    }
+    
+    // Global notification section
+    post {
+        always {
+            echo "The pipeline has finished execution."
+        }
+    }
+}
+

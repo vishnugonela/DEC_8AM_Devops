@@ -1,0 +1,29 @@
+// Write a pipeline script to execute on agent (NODE1) and make sure failure case of NODE1. Ex: if NODE1 fails/offline, script should run on NODE2 
+
+pipeline {
+    agent none 
+    stages {
+        stage('Resilient Node Selection') {
+            steps {
+                script {
+                    try {
+                        // Limit the wait time to 10 seconds
+                        timeout(time: 10, unit: 'SECONDS') {
+                            node('NODE1') {
+                                echo "Running on NODE1"
+                                sh 'hostname'
+                            }
+                        }
+                    } catch (Exception e) {
+                        echo "NODE1 was not available within 10 seconds. Switching to NODE2..."
+                        node('NODE2') {
+                            echo "Running on NODE2"
+                            sh 'hostname'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
