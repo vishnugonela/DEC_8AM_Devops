@@ -1,0 +1,38 @@
+// Write a dockerfile to create image to print container details in web-page. 
+	Like container name: ----
+	     container IP:   172.17.0.3
+	     date:
+
+Dockerfile:
+
+FROM nginx:latest
+
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+CMD ["/start.sh"]
+
+
+
+Start.sh shell script
+
+#!/bin/bash
+
+echo "<html><body>" > /usr/share/nginx/html/index.html
+echo "<h2>Container Details</h2>" >> /usr/share/nginx/html/index.html
+echo "Container Name: $(hostname)<br>" >> /usr/share/nginx/html/index.html
+echo "Container IP: $(hostname -i)<br>" >> /usr/share/nginx/html/index.html
+echo "Date: $(date)<br>" >> /usr/share/nginx/html/index.html
+echo "</body></html>" >> /usr/share/nginx/html/index.html
+
+nginx -g 'daemon off;'
+
+
+Build Image:
+
+docker build -t container-details .
+
+
+Run the container
+
+docker run -d -p 8080:80 --name mycontainer container-details
