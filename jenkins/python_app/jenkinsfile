@@ -4,7 +4,7 @@ pipeline {
   stages{
     stage('git_checkout'){
       steps {
-        git tool: 'Default', branch: 'main', url: 'https://github.com/vishnugonela/pythonapp.git'
+        git branch: 'main', url: 'https://github.com/vishnugonela/pythonapp.git'
       }
     }
 
