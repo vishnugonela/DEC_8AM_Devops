@@ -1,0 +1,70 @@
+pipeline {
+
+  agent any
+  stages{
+    stage('git_checkout'){
+      steps {
+        git branch: 'main', url: 'https://github.com/vishnugonela/pythonapp.git'
+      }
+    }
+
+    stage('docker_image_build'){
+      steps {
+        sh '''
+          cd  ${WORKSPACE}/
+          echo "Image Building ..."
+
+          docker image build -t pythonapp .
+          
+        '''
+      }
+    }
+
+    stage('docker_tag_push'){
+      steps {
+        withCredentials([string(credentialsId: 'docker_pass', variable: 'Docker_TOKEN')]) {
+
+        sh '''
+            docker image tag pythonapp:latest manchabayanna/pythonapp:latest
+
+            docker login -u manchabayanna -p ${Docker_TOKEN}
+
+            docker image push manchabayanna/pythonapp:latest
+
+        '''
+        }
+      }
+    }
+
+    stage('deployment_on_slave'){
+      agent {
+        label 'Node1'
+      }
+      steps {
+        sh '''
+            if docker container ls -a | grep -q app1
+            then
+                echo "******** Removing the container app1 **********"
+                docker container rm -f app1
+                docker container run -d --name app1 -p 5050:8000  manchabayanna/pythonapp:latest
+            else
+               echo "************ Container creating app1 ************"
+                docker container run -d --name app1 -p 5050:8000  manchabayanna/pythonapp:latest 
+            fi
+        '''
+      }
+      
+    }
+
+    stage('validate_app_run'){
+        agent {
+        label 'Node1'
+      }
+      steps {
+        sh '''
+            docker container ls | grep app1
+        '''
+      }
+    }
+  }
+}
