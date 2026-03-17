@@ -46,10 +46,10 @@ pipeline {
             then
                 echo "******** Removing the container app1 **********"
                 docker container rm -f app1
-                docker container run -d --name app1 -p 5050:80  manchabayanna/pythonapp:latest
+                docker container run -d --name app1 -p 5050:8000  manchabayanna/pythonapp:latest
             else
                echo "************ Container creating app1 ************"
-                docker container run -d --name app1 -p 5050:80  manchabayanna/pythonapp:latest 
+                docker container run -d --name app1 -p 5050:8000  manchabayanna/pythonapp:latest 
             fi
         '''
       }
