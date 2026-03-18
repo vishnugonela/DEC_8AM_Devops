@@ -46,7 +46,6 @@ pipeline {
       agent{
         label 'Node'
       }
-    }
     steps{
       sh '''
       docker container ls -a | grep c1
@@ -55,3 +54,4 @@ pipeline {
   }
 }
 }
+
