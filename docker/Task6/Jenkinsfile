@@ -37,9 +37,9 @@ pipeline {
         if docker container ls -a | grep c1
         then
         docker container rm -f c1
-        docker container run -d --name c1 -p 8081:80 sravani3985/pythonapp:latest
+        docker container run -d --name c1 -p 5050:8000 sravani3985/pythonapp:latest
         else
-        docker container run -d --name c1 -p 8081:80 sravani3985/pythonapp:latest
+        docker container run -d --name c1 -p 5050:8000 sravani3985/pythonapp:latest
         fi
         '''
   }
