@@ -40,6 +40,7 @@ pipeline {
         docker container run -d --name c1 -p 8081:80 sravani3985/pythonapp:latest
         else
         docker container run -d --name c1 -p 8081:80 sravani3985/pythonapp:latest
+        fi
         '''
   }
 }
