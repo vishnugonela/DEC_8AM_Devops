@@ -9,7 +9,7 @@ pipeline {
     stage("Building_Image"){
       steps{
         sh '''
-        cd $(WORKSPACE)
+        cd $(WORKSPACE)/
 
         docker image build -t pythonapp .
         '''
