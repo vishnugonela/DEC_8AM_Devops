@@ -30,7 +30,7 @@ pipeline {
     }
     stage("deployment_on_slave"){
       agent {
-        label 'Node'
+        label 'Node1'
       }
       steps{
         sh '''
@@ -45,7 +45,7 @@ pipeline {
 }
     stage("validate_application"){
       agent{
-        label 'Node'
+        label 'Node1'
       }
     steps{
       sh '''
