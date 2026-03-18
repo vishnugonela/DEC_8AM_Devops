@@ -33,9 +33,9 @@ pipeline {
       }
       steps{
         sh '''
-        if docker container ls -a | grep hello
+        if docker container ls -a | grep c1
         then
-        docker container rm -f hello
+        docker container rm -f c1
         docker container run -d --name c1 -p 8081:80 sravani3985/pythonapp:latest
         else
         docker container run -d --name c1 -p 8081:80 sravani3985/pythonapp:latest
@@ -49,8 +49,8 @@ pipeline {
     }
     steps{
       sh '''
-      docker container ls -a | grep hello
-      docker logs hello
+      docker container ls -a | grep c1
+      docker logs c1
       '''
   }
 }
