@@ -1,0 +1,19 @@
+pipeline{
+anyagent{
+        stages{
+           stage('build'){
+            steps{
+                 sh ''' echo $WORKSPACE
+                      ls -a
+                    '''
+                  }
+                }
+            stages{
+           stage('build'){
+            steps{
+                 sh ''' echo $WORKSPACE
+                     echo "$WORKSPACE/linux/linux/s2.sh"
+                      
+                    '''
+                  }
+                }
