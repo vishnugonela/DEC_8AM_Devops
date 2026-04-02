@@ -1,0 +1,6 @@
+make a dir d1  create a dockerfile and index.html: enter the cmds
+FROM ubuntu:22.04 ubutu server version image tag update
+RUN apt update [update the apt
+RUN apt install apche2 -y[installl the apche2 server accept it Y]
+COPY index.html /var/www/html [copy the index.html to default path of the apche var/www.html]
+EXPOSE 80 [container can be expose the host port as 80]
