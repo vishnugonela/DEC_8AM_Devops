@@ -1,0 +1,29 @@
+#!/bin/bash
+
+IMAGE="nginx:alpine"
+PORT_START=8081
+
+for i in {1..10}
+do
+    CONTAINER_NAME="mycontainer_$i"
+    PORT=$((PORT_START + i - 1))
+
+    echo "--------------------------------------"
+    echo "Checking container: $CONTAINER_NAME"
+
+    # Check if container exists (running or stopped)
+    if [ "$(docker ps -a -q -f name=^/${CONTAINER_NAME}$)" ]; then
+        echo "Container exists. Removing $CONTAINER_NAME ..."
+        docker rm -f $CONTAINER_NAME
+    else
+        echo "Container does not exist."
+    fi
+
+    echo "Creating container: $CONTAINER_NAME on port $PORT"
+    docker run -d -p $PORT:80 --name $CONTAINER_NAME $IMAGE
+
+    echo "$CONTAINER_NAME created successfully!"
+done
+
+echo "--------------------------------------"
+echo "All 10 containers are created successfully."
