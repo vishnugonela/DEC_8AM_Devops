@@ -1,0 +1,10 @@
+pod:-A smallest deployable unit in k8's wraps one or more containers
+Node:- A machine (VM or physical) where schedule and running
+cluster:' A set of nodes managed by control plane
+Deployement:- manages rolling updates and ensures desired num of pod replicas
+Replica set:- Ensure a specified num of identical pods are running
+stateful set:-like deployement but for stateful apps with persistent identify and storage 
+Daemon set:- Ensure a copy pf pods runs on all nodes
+job:-runs pods that complete a task and exit
+cronjob:schedule jobs to run at specific times like a container
+service:-exposes a stable network interface to access pods
