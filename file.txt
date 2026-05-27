@@ -3,3 +3,5 @@ First message
 Hello
 The beginning
 The conclusion from practice branch
+Making changes from second-copy
+Another remote change
